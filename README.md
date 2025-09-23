@@ -51,7 +51,7 @@ A modern, high-performance, and visually stunning blog management system. This f
 1.  **Clone the Repository:**
     Open your **WSL2 terminal** (e.g., Ubuntu) and run:
     ```bash
-    git clone https://github.com/Ayesha1214/blog-post-manager.git
+    git clone https://github.com/Ayesha1214/blog-post-manager-project.git
     # AFTER cloning, navigate into the project folder
     cd blog-post-manager
     ```
@@ -115,3 +115,4 @@ curl http://localhost:8888/api/posts
 
 # View a specific post (replace <ID> with the ID from the created post)
 curl http://localhost:8888/api/posts/<ID>
+
