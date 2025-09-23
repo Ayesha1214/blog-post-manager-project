@@ -1,0 +1,60 @@
+version: '3.8' # Keep version for clarity, Docker will ignore the warning
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15
+    container_name: blog-postgres
+    environment:
+      POSTGRES_DB: blogdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - blog-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d blogdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend # THIS LINE IS ABSOLUTELY CRITICAL! It must be './backend'
+      dockerfile: Dockerfile # This now correctly refers to ./backend/Dockerfile
+    container_name: blog-backend
+    ports:
+      - "8888:8888"
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=blogdb
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - MICRONAUT_SERVER_PORT=8888
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - blog-network
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", " -f", "http://localhost:8888/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  blog-network:
+    driver: bridge

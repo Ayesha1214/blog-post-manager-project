@@ -1,0 +1,14 @@
+<configuration> <!-- Root element for Logback configuration -->
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender"> <!-- Defines a console appender named "STDOUT" that outputs log messages to the console -->
+        <!-- encoders are assigned the type
+             ch.qos.logback.classic.encoder.PatternLayoutEncoder by default --> <!-- Comment explaining default encoder type -->
+        <encoder> <!-- Encoder element that formats log messages before output -->
+            <pattern>%cyan(%d{HH:mm:ss.SSS}) %gray([%thread]) %highlight(%-5level) %magenta(%logger{36}) - %msg%n</pattern> <!-- Pattern for log formatting: cyan timestamp, gray thread name, highlighted log level, magenta logger name, and message with newline -->
+        </encoder> <!-- Closes encoder configuration -->
+    </appender> <!-- Closes appender configuration -->
+
+    <root level="info"> <!-- Root logger configuration set to INFO level - will log INFO, WARN, and ERROR messages -->
+        <appender-ref ref="STDOUT" /> <!-- References the STDOUT appender defined above to output root logger messages to console -->
+    </root> <!-- Closes root logger configuration -->
+</configuration> <!-- Closes Logback configuration -->

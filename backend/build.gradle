@@ -1,0 +1,84 @@
+// backend/build.gradle
+plugins {
+    id("io.micronaut.application") version "4.5.4"
+    id("com.gradleup.shadow") version "8.3.7"
+    // Keep AOT and Test Resources plugins commented out for stable builds
+    // id("io.micronaut.test-resources") version "4.5.4"
+    // id("io.micronaut.aot") version "4.5.4"
+}
+
+version = "0.1"
+group = "com.fintrellis.blogmanager"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Annotation Processors (must be first)
+    annotationProcessor("io.micronaut.data:micronaut-data-processor")
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    annotationProcessor("io.micronaut.validation:micronaut-validation-processor")
+
+    // Micronaut Core
+    implementation("io.micronaut:micronaut-http-client")
+    implementation("io.micronaut:micronaut-jackson-databind")
+    implementation("io.micronaut:micronaut-management") // For health endpoint
+    implementation("io.micronaut:micronaut-core") // Explicitly add Micronaut Core
+
+    // Micronaut Data JPA with Hibernate
+    implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari") // Connection pool
+    implementation("jakarta.persistence:jakarta.persistence-api") // JPA API
+
+    // Validation
+    implementation("io.micronaut.validation:micronaut-validation")
+    implementation("jakarta.validation:jakarta.validation-api") // Jakarta Validation API
+    implementation("jakarta.annotation:jakarta.annotation-api") // Jakarta Annotation API (for @Inject)
+
+    // Database Driver (Production)
+    runtimeOnly("org.postgresql:postgresql")
+
+    // Logging
+    runtimeOnly("ch.qos.logback:logback-classic")
+
+    // --- TEST DEPENDENCIES (CRITICAL FOR UNIT TESTS) ---
+    testImplementation("io.micronaut.test:micronaut-test-junit5") // Micronaut JUnit 5 integration
+    testImplementation("org.junit.jupiter:junit-jupiter-api") // JUnit 5 API
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine") // JUnit 5 Engine
+    testImplementation("org.mockito:mockito-core") // Mockito for mocking dependencies
+    testImplementation("org.mockito:mockito-junit-jupiter") // Mockito integration with JUnit 5
+    testImplementation("io.micronaut:micronaut-core") // Micronaut Core for tests
+    testImplementation("io.micronaut:micronaut-http-client") // HTTP client for integration tests
+
+    // H2 Database for Testing (NEW - This is the key addition!)
+    testRuntimeOnly("com.h2database:h2") // In-memory database for tests
+    // --- END TEST DEPENDENCIES ---
+}
+
+application {
+    mainClass = "com.fintrellis.blogmanager.Application"
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("21")
+    targetCompatibility = JavaVersion.toVersion("21")
+}
+
+// Keep commented out for reliable startup
+// graalvmNative.toolchainDetection = false
+
+micronaut {
+    runtime("netty") // Use Netty runtime for standalone application
+    testRuntime("junit5") // Ensure JUnit 5 is set as test runtime
+    processing {
+        incremental(true)
+        annotations("com.fintrellis.blogmanager.*")
+    }
+    // No AOT or Test Resources configuration here for now
+}
+
+// Keep commented out for reliable startup
+// tasks.named("dockerfileNative") {
+//     jdkVersion = "21"
+// }
