@@ -53,16 +53,16 @@ A modern, high-performance, and visually stunning blog management system. This f
     ```bash
     git clone https://github.com/Ayesha1214/blog-post-manager-project.git
     # AFTER cloning, navigate into the project folder
-    cd blog-post-manager
+    cd blog-post-manager-project
     ```
 2.  **Install Frontend Dependencies:**
     Navigate to the `frontend` directory in your **Windows Command Prompt** (or PowerShell) and install dependencies, including CRACO and Tailwind.
     ```bash
-    cd C:\Users\Ayesha\Desktop\blog-post-manager\frontend
+    cd C:\Users\Ayesha\Desktop\blog-post-manager-project\frontend
     npm install
     ```
 3.  **Start the Backend (with Docker Compose):**
-    In your **WSL2 terminal** (in the project root `blog-post-manager`), run:
+    In your **WSL2 terminal** (in the project root `blog-post-manager-project`), run:
     ```bash
     docker-compose up --build
     ```
@@ -108,11 +108,12 @@ curl http://localhost:8888/api/posts
 # Create a new blog post
 curl -X POST http://localhost:8888/api/posts \
   -H "Content-Type: application/json" \
-  -d '{"title":"First Post from API","content":"This is exciting content!","author":"Ayesha Namrata","published":true}'
+  -d '{"title":"First Post from API","content":"This is exciting content!","author":"My name","published":true}'
 
 # Get all posts again (should now show your new post)
 curl http://localhost:8888/api/posts
 
 # View a specific post (replace <ID> with the ID from the created post)
 curl http://localhost:8888/api/posts/<ID>
+
 
