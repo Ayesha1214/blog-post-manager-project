@@ -72,7 +72,7 @@ A modern, high-performance, and visually stunning blog management system. This f
     In the **same Windows Command Prompt** where you ran `npm install`, you have two options to run the frontend (CRACO will automatically handle the Tailwind configuration):
 
     *   **Option A: Development Mode (Recommended for Review)**
-        This starts a development server with hot-reloading.
+        This starts a development server with hot-reloading.Note: before running npm start, you have to run "npm install" if you get error craco is not recognized as internal/external command.
         ```bash
         npm start
         ```
@@ -115,5 +115,6 @@ curl http://localhost:8888/api/posts
 
 # View a specific post (replace <ID> with the ID from the created post)
 curl http://localhost:8888/api/posts/<ID>
+
 
 
